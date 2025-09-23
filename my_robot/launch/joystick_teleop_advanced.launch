@@ -1,0 +1,44 @@
+<launch>
+  <!-- joy_node: Logitech F710 (X mode) -->
+  <node pkg="joy" type="joy_node" name="joy_node" output="screen">
+    <param name="autorepeat_rate"   value="0"/>
+    <param name="coalesce_interval" value="0.002"/>
+    <param name="deadzone"          value="0.05"/>
+  </node>
+
+  <!-- แปลง /joy -> /cmd_vel (เวอร์ชันนิ่ง + STOP + watchdog) -->
+  <node pkg="my_robot" type="joy_to_cmdvel_advanced.py" name="joy_to_cmdvel" output="screen">
+    <!-- แกนตาม XInput มาตรฐาน: LX=0, LY=1 -->
+    <param name="axis_linear"    value="1"/>     <!-- LY (ขึ้น/ลง) -->
+    <param name="axis_angular"   value="0"/>     <!-- LX (ซ้าย/ขวา) -->
+    <param name="invert_linear"  value="true"/>  <!-- LY ขึ้นเป็น -1 จึงกลับทิศให้เดินหน้า -->
+    <param name="invert_angular" value="false"/>
+
+    <!-- ปุ่ม XInput: A=0 B=1 X=2 Y=3 LB=4 RB=5 Back=6 Start=7 -->
+    <param name="btn_speed_up"   value="4"/>     <!-- LB -->
+    <param name="btn_speed_down" value="5"/>     <!-- RB -->
+    <param name="btn_precision"  value="0"/>     <!-- A (กดค้าง) -->
+    <param name="btn_stop"       value="7"/>     <!-- Start = Toggle STOP -->
+
+    <!-- เพดาน/สเกลความเร็ว -->
+    <param name="linear_scale"   value="0.50"/>
+    <param name="angular_scale"  value="1.00"/>
+    <param name="linear_min"     value="0.10"/>
+    <param name="linear_max"     value="1.00"/>
+    <param name="angular_min"    value="0.20"/>
+    <param name="angular_max"    value="2.00"/>
+
+    <!-- ความนิ่ง: deadzone/expo/filter/slew -->
+    <param name="deadzone"       value="0.10"/>
+    <param name="expo_linear"    value="0.30"/>
+    <param name="expo_angular"   value="0.25"/>
+    <param name="alpha_filter"   value="0.30"/>  <!-- มาก=ตามไว -->
+    <param name="slew_lin_max"   value="0.15"/>  <!-- m/s ต่อ callback -->
+    <param name="slew_ang_max"   value="0.50"/>  <!-- rad/s ต่อ callback -->
+
+    <!-- โหมดละเอียด + ความปลอดภัย -->
+    <param name="precision_scale" value="0.30"/>
+    <param name="joy_timeout_s"   value="0.50"/> <!-- ไม่ได้ Joy เกินนี้ → หยุด -->
+  </node>
+</launch>
+

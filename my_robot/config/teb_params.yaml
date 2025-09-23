@@ -1,0 +1,38 @@
+TebLocalPlannerROS:
+  odom_topic: /odometry/filtered
+  map_frame: odom
+
+  max_vel_x: 0.8
+  min_vel_x: -0.8
+  max_vel_y: 0.8
+  min_vel_y: -0.8
+  max_vel_theta: 1.0
+  min_vel_theta: -1.0
+
+  acc_lim_x: 0.2
+  acc_lim_y: 0.2
+  acc_lim_theta: 0.3
+
+  holonomic_robot: true
+  prefer_forward_drive: false
+
+  weight_kinematics_forward_drive: 1.0
+  weight_kinematics_sideward_drive: 1.0
+  weight_kinematics_nh: 0.0
+  min_turning_radius: 0.5
+  weight_kinematics_turning_radius: 1.0
+  weight_optimaltime: 1.0
+  weight_obstacle: 2.0
+  weight_shortest_path: 0.5
+
+  xy_goal_tolerance: 0.1
+  yaw_goal_tolerance: 0.2
+  free_goal_vel: true
+  
+  min_obstacle_dist: 0.05
+  inflation_dist: 0.1
+  include_costmap_obstacles: true
+  costmap_obstacles_behind_robot_dist: 1.0
+
+  allow_init_with_backwards_motion: false
+

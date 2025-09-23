@@ -1,0 +1,61 @@
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+  - Class: rviz/Selection
+    Name: Selection
+  - Class: rviz/Views
+    Name: Views
+  - Class: rviz/Time
+    Name: Time
+Visualization Manager:
+  Global Options:
+    Fixed Frame: map
+    Background Color: 48; 48; 48
+  Displays:
+    - Class: rviz/TF
+      Name: TF
+      Enabled: true
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+    - Class: rviz/RobotModel
+      Name: RobotModel
+      Enabled: true
+      Robot Description: robot_description
+      Visual Enabled: true
+      Collision Enabled: false
+    - Class: rviz/LaserScan
+      Name: Laser
+      Enabled: true
+      Topic: /scan
+      Queue Size: 10
+      Style: Points
+      Size (Pixels): 2
+      Color: 255; 255; 255
+      Use rainbow: true
+      Transformer: FixedFrame
+    - Class: rviz/Map
+      Name: Map
+      Enabled: true
+      Topic: /map
+      Alpha: 0.9
+      Draw Behind: true
+    - Class: rviz/Odometry
+      Name: Odom
+      Enabled: true
+      Topic: /odom
+      Shape: Arrow
+      Keep: 100
+      Color: 25; 255; 240
+    - Class: rviz/Path
+      Name: Path (optional)
+      Enabled: false
+      Topic: /move_base/GlobalPlanner/plan
+      Color: 255; 0; 0
+      Width: 0.05
+  Views:
+    Current:
+      Class: rviz/TopDownOrtho
+      Target Frame: map
+      Scale: 50
+      Angle: 0

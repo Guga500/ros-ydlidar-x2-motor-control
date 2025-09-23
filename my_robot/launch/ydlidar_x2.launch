@@ -1,0 +1,21 @@
+<launch>
+  <param name="port" value="/dev/ttyUSB0"/>
+  <param name="baudrate" value="115800"/>
+  <param name="frame_id" value="laser"/>
+
+  <param name="angle_min" value="-180"/>
+  <param name="angle_max" value="180"/>
+  <param name="range_min" value="0.08"/>
+  <param name="range_max" value="8.0"/>
+  <param name="frequency" value="5"/>       <!-- Hz -->
+  <param name="resolution_fixed" value="true"/>
+  <param name="reversion" value="false"/>
+
+  <node pkg="ydlidar" type="ydlidar_node" name="ydlidar_node" output="screen">
+    <remap from="scan" to="/scan"/>
+  </node>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="laser_to_base"
+        args="0.15 0.0 0.20 0 0 0 base_footprint laser"/>
+</launch>
+

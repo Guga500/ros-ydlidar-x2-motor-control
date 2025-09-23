@@ -1,0 +1,9 @@
+topics:
+  - name: navigation
+    topic: /twist_mux/input/navigation
+    timeout: 0.5
+    priority: 50
+  - name: teleop
+    topic: /twist_mux/input/teleop
+    timeout: 0.5
+    priority: 100   # ให้จอย “ตัดหน้า” นำทางเสมอ

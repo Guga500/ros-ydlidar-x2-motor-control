@@ -1,0 +1,62 @@
+<launch>
+  <!-- ====== Args ปรับตามหน้างาน ====== -->
+  <arg name="lidar_x"     default="0.00"/>
+  <arg name="lidar_y"     default="0.00"/>
+  <arg name="lidar_z"     default="0.10"/>
+  <arg name="lidar_yaw"   default="0.0"/>           <!-- rad -->
+  <arg name="lidar_frame" default="laser_frame"/>   <!-- ให้ตรงกับ /scan.header.frame_id -->
+  <arg name="rviz"        default="true"/>          <!-- เปิด/ปิด RViz -->
+  <arg name="rviz_config" default="$(find my_robot)/rviz/my_slam_view.rviz"/>
+  <arg name="use_odom_to_tf" default="true"/>       <!-- ถ้า MCU ยังไม่ broadcast TF odom->base_footprint ให้เปิดไว้ -->
+
+  <!-- ====== 1) YDLIDAR X2 ====== -->
+  <!-- ไม่ส่ง arg แปลกเข้าไป เพราะ X2.launch ไม่รองรับ; ใช้ค่าในแพ็กเกจมัน -->
+  <include file="$(find ydlidar_ros_driver)/launch/X2.launch"/>
+
+  <!-- ====== 2) TF base_footprint -> lidar_frame (Euler) ====== -->
+  <!-- รูปแบบ: x y z yaw pitch roll parent child period_ms -->
+  <node pkg="tf" type="static_transform_publisher" name="base_to_laser"
+        args="$(arg lidar_x) $(arg lidar_y) $(arg lidar_z) $(arg lidar_yaw) 0 0 base_footprint $(arg lidar_frame) 100"/>
+
+  <!-- ====== 3) (ตัวเลือก) แปลง /odom -> TF odom->base_footprint ====== -->
+  <group if="$(arg use_odom_to_tf)">
+    <!-- ใส่สคริปต์ odom_to_tf.py ไว้ใน my_robot/scripts ตามที่ให้ไป -->
+    <node pkg="my_robot" type="odom_to_tf.py" name="odom_to_tf" output="screen"/>
+  </group>
+
+  <!-- ====== 4) GMapping (สร้าง /map) ====== -->
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <param name="base_frame" value="base_footprint"/>
+    <param name="odom_frame" value="odom"/>
+    <param name="map_frame"  value="map"/>
+
+    <param name="throttle_scans" value="1"/>
+    <param name="maxRange"  value="12.0"/>
+    <param name="maxUrange" value="8.0"/>
+    <param name="minimumRange" value="0.12"/>
+
+    <param name="linearUpdate"  value="0.25"/>
+    <param name="angularUpdate" value="0.15"/>
+
+    <param name="xmin" value="-15.0"/>
+    <param name="ymin" value="-15.0"/>
+    <param name="xmax" value="15.0"/>
+    <param name="ymax" value="15.0"/>
+    <param name="delta" value="0.05"/>
+
+    <param name="srr" value="0.1"/>
+    <param name="srt" value="0.2"/>
+    <param name="str" value="0.1"/>
+    <param name="stt" value="0.2"/>
+    <param name="particles" value="40"/>
+    <param name="resampleThreshold" value="0.5"/>
+    <param name="iterations" value="5"/>
+    <param name="occ_thresh" value="0.25"/>
+  </node>
+
+  <!-- ====== 5) RViz (พร้อม config) ====== -->
+  <group if="$(arg rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_config)" output="screen"/>
+  </group>
+</launch>
+

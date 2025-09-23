@@ -1,0 +1,7 @@
+<launch>
+  <!-- ปรับ path ให้ตรงกับที่เซฟไฟล์ rviz ไว้ -->
+  <arg name="rviz_config" default="$(find my_robot)/rviz/my_slam_view.rviz"/>
+
+  <!-- เปิด RViz ด้วย config ข้างบน -->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rviz_config)" output="screen"/>
+</launch>
