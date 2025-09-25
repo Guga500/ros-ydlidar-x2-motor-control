@@ -1,0 +1,25 @@
+sudo apt update
+# เปลี่ยน humble เป็นเวอร์ชัน ROS2 ที่ใช้อยู่ (jazzy/iron/foxy ฯลฯ)
+sudo apt install ros-humble-turtlesim ros-humble-joy python3-colcon-common-extensions
+cd ~/ros2_ws/src
+ros2 pkg create --build-type ament_python gp650_turtlesim_teleop
+วางไฟล์ตามนี้
+gp650_turtlesim_teleop/
+├─ package.xml
+├─ setup.py
+├─ gp650_turtlesim_teleop/
+│  ├─ __init__.py
+│  └─ teleop_node.py
+├─ launch/
+│  └─ teleop.launch.py
+└─ config/
+   └─ gp650_params.yaml
+สร้างไฟล์ว่าง resource/gp650_turtlesim_teleop ด้วย:
+mkdir -p resource && touch resource/gp650_turtlesim_teleop
+cd ~/ros2_ws
+colcon build --symlink-install
+source install/setup.bash
+
+# เสียบจอย GP-650, จากนั้น:
+ros2 launch gp650_turtlesim_teleop teleop.launch.py
+
