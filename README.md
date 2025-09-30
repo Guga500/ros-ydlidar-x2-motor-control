@@ -1,8 +1,12 @@
 not 100% cant niavigation
+ข้างในจะมี ไฟล์ my_robot ใช้ ros noetic หุ่นยนขนส่ง
+         ไฟล์ tur ใช้ ros2 rolling เป็น turtle sim joystick
 how to install วิธีโหลดและใช้
 1.download
+ถ้าโหลดเป็นไฟล์ zip ให้แตกไฟล์แล้วลากไฟล์ my_robot เข้า workspace เลย
 cd ~/catkin_ws/src
 git clone https://github.com/Guga500/ros-ydlidar-x2-motor-control.git
+หลัง gitclone ให้เข้าไปในไฟล์ workspace แล้วลาก my_robot เข้า catkin_ws/src เลย
 2.install dependencies
 cd ~/catkin_ws
 rosdep install --from-paths src --ignore-src -r -y
